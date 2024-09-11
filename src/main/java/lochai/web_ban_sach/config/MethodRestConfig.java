@@ -21,6 +21,9 @@ public class MethodRestConfig implements RepositoryRestConfigurer {
     @Autowired
     private EntityManager entityManager;
 
+
+    //
+
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         HttpMethod[] chanCacPhuongThuc = {
