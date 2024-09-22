@@ -55,7 +55,9 @@ public class NguoiDung {
     })
     private List<SachYeuThich> danhSachYeuThich;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {
+
+    // để EAGER thì mới dùng được spring security, vì khi load người dùng lên thì lấy hết quyền để spring security xử lý
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH
     })

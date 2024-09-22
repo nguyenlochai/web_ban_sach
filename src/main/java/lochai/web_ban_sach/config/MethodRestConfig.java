@@ -16,22 +16,31 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 public class MethodRestConfig implements RepositoryRestConfigurer {
-    private String url = "http://localhost:8080";
+    private String url = "http://localhost:3000";
 
-    @Autowired
-    private EntityManager entityManager;
+//    @Autowired
+//    private EntityManager entityManager;
 
 
     //
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        HttpMethod[] chanCacPhuongThuc = {
-                HttpMethod.POST,
-                HttpMethod.PUT,
-                HttpMethod.PATCH,
-                HttpMethod.DELETE
-        };
+
+
+        // Cho phép url này vào các phương thức "Get", "POST", "PUT", "DELETE"
+        // là cho phép frontend gọi enpoi của backend
+//        cors.addMapping("/**")
+//                .allowedHeaders(url)
+//                .allowedHeaders("Get", "POST", "PUT", "DELETE");
+//
+//
+//        HttpMethod[] chanCacPhuongThuc = {
+//                HttpMethod.POST,
+//                HttpMethod.PUT,
+//                HttpMethod.PATCH,
+//                HttpMethod.DELETE
+//        };
 
         //expose ids, hiển thị nhiều id, (cho phép id xuất hiện bên trong json)
         // entityManager.getMetamodel().getEntities().stream().map(Type::getJavaType).toArray(Class[]::new) là thông tin của các entity để hiển thị phản hồi ở json
@@ -43,16 +52,29 @@ public class MethodRestConfig implements RepositoryRestConfigurer {
         //config.exposeIdsFor(TheLoai.class);
 
 
-        disableHttpMethods(TheLoai.class, config, chanCacPhuongThuc);
+
+        // vô hiệu hóa
+        // HttpMethod.POST,
+        // HttpMethod.PUT,
+        // HttpMethod.PATCH,
+        // HttpMethod.DELETE
+        //disableHttpMethods(TheLoai.class, config, chanCacPhuongThuc);
+
+
 
         HttpMethod[] phuongThucDelete = {
 
                 HttpMethod.DELETE
         };
+        // vô hiệu hóa
+        // HttpMethod.DELETE
         disableHttpMethods(NguoiDung.class, config, phuongThucDelete);
 
     }
 
+
+    //Hàm disableHttpMethods được dùng để vô hiệu hóa các phương thức HTTP (như POST, PUT, DELETE,...) cho các REST endpoint tự động tạo ra bởi Spring Data REST
+    // , nhằm kiểm soát quyền truy cập vào các API của một entity cụ thể và tăng cường bảo mật cho ứng dụng.
     private void disableHttpMethods(Class c, RepositoryRestConfiguration config, HttpMethod[] methods){
         config.getExposureConfiguration()
                 .forDomainType(c)
